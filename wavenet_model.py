@@ -145,9 +145,9 @@ class WaveNetModel(nn.Module):
 
             # dilated convolution
             filter = self.filter_convs[i](residual)
-            filter = F.tanh(filter)
+            filter = torch.tanh(filter)
             gate = self.gate_convs[i](residual)
-            gate = F.sigmoid(gate)
+            gate = torch.sigmoid(gate)
             x = filter * gate
 
             # parametrized skip connection
