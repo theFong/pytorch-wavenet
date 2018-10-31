@@ -56,4 +56,4 @@ print("output 2: ", output2)
 
 diff = output - output2
 dot = torch.dot(diff, diff)
-print("mse: ", dot.data[0])
+print("mse: ", dot.item())
