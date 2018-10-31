@@ -37,7 +37,7 @@ print("test output 2: ", test_output_2)
 
 diff = test_output_1 - test_output_2
 dot = torch.dot(diff, diff)
-print("mse: ", dot.data[0])
+print("mse: ", dot.item())
 
 data = ["../train_samples/bach_cello_suite_1_sarabande.mp3"]
 
