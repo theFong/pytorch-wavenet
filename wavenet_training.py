@@ -61,6 +61,7 @@ class WavenetTrainer:
         for current_epoch in range(epochs):
             print("epoch", current_epoch)
             tic = time.time()
+            print(len(self.dataloader))
             for (x, target) in iter(self.dataloader):
                 x = Variable(x.type(self.dtype))
                 target = Variable(target.view(-1).type(self.ltype))
