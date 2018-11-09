@@ -68,9 +68,14 @@ logger = TensorboardLogger(log_interval=200,
 #                 validation_interval=400,
 #                 generate_interval=1000)
 
+from optimizers import SGDNormalizedL1Regularized
+
 trainer = WavenetTrainer(model=model,
                          dataset=data,
+                         optimizer=SGDNormalizedL1Regularized,
                          lr=0.001,
+                         weight_decay=.25,
+                         alpha=.25,
                          snapshot_path='snapshots',
                          snapshot_name='chaconne_model',
                          snapshot_interval=1000,
