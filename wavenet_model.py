@@ -210,7 +210,7 @@ class WaveNetModel(nn.Module):
             print("pad zero")
 
         for i in range(num_samples):
-            input = Variable(torch.FloatTensor(1, self.classes, self.receptive_field).zero_())
+            input = Variable(torch.cuda.FloatTensor(1, self.classes, self.receptive_field).zero_())
             input = input.scatter_(1, generated[-self.receptive_field:].view(1, -1, self.receptive_field), 1.)
 
             x = self.wavenet(input,
