@@ -123,7 +123,7 @@ class WaveNetModel(nn.Module):
         self.receptive_field = receptive_field
 
     def wavenet(self, input, dilation_func):
-
+        
         x = self.start_conv(input)
         skip = 0
 
@@ -252,8 +252,12 @@ class WaveNetModel(nn.Module):
 
         num_given_samples = first_samples.size(0)
         total_samples = num_given_samples + num_samples
-
-        input = Variable(torch.FloatTensor(1, self.classes, 1).zero_())
+        print(torch.cuda.is_available())
+        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+        input = Variable(torch.cuda.FloatTensor(1, self.classes, 1).zero_())
+        input.to(device)
+        print(type(device))
+        print(type(input))
         input = input.scatter_(1, first_samples[0:1].view(1, -1, 1), 1.)
 
         # fill queues with given samples

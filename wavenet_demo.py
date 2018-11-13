@@ -58,15 +58,15 @@ def generate_and_log_samples(step):
     print("audio clips generated")
 
 
-logger = TensorboardLogger(log_interval=200,
-                           validation_interval=400,
-                           generate_interval=1000,
-                           generate_function=generate_and_log_samples,
-                           log_dir="logs/chaconne_model")
+# logger = TensorboardLogger(log_interval=200,
+#                           validation_interval=400,
+#                           generate_interval=1000,
+#                           generate_function=generate_and_log_samples,
+#                           log_dir="logs/chaconne_model")
 
-# logger = Logger(log_interval=200,
-#                 validation_interval=400,
-#                 generate_interval=1000)
+logger = Logger(log_interval=200,
+                validation_interval=400,
+                generate_interval=1000)
 
 from optimizers import SGDNormalizedL1Regularized
 
@@ -76,13 +76,13 @@ trainer = WavenetTrainer(model=model,
                          lr=0.001,
                          weight_decay=.001,
                          alpha=.001,
-                         snapshot_path='snapshots',
-                         snapshot_name='chaconne_model',
-                         snapshot_interval=1000,
+                         #snapshot_path='snapshots',
+                         #snapshot_name='chaconne_model',
+                         #snapshot_interval=1000,
                          logger=logger,
                          dtype=dtype,
                          ltype=ltype)
 
 print('start training...')
 trainer.train(batch_size=16,
-              epochs=10)
+              epochs=1)
