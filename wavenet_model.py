@@ -176,7 +176,6 @@ class WaveNetModel(nn.Module):
 
     def queue_dilate(self, input, dilation, init_dilation, i):
         queue = self.dilated_queues[i]
-        print(input.data[0][0])
         queue.enqueue(input.data[0][0])
         x = queue.dequeue(num_deq=self.kernel_size,
                           dilation=dilation)
@@ -209,11 +208,13 @@ class WaveNetModel(nn.Module):
         if num_pad > 0:
             generated = constant_pad_1d(generated, self.scope, pad_start=True)
             print("pad zero")
-
+        cuda_available = torch.cuda.is_available()
+        device = torch.device("cuda:0" if cuda_available else "cpu")
         for i in range(num_samples):
-            input = Variable(torch.cuda.FloatTensor(1, self.classes, self.receptive_field).zero_())
-            input = input.scatter_(1, generated[-self.receptive_field:].view(1, -1, self.receptive_field), 1.)
 
+            input = Variable(torch.cuda.FloatTensor(1, self.classes, self.receptive_field).zero_()) if cuda_available else Variable(torch.FloatTensor(1, self.classes, self.receptive_field).zero_())
+            input = input.scatter_(1, generated[-self.receptive_field:].view(1, -1, self.receptive_field), 1.)
+            input.to(device)
             x = self.wavenet(input,
                              dilation_func=self.wavenet_dilate)[:, :, -1].squeeze()
 
@@ -253,13 +254,12 @@ class WaveNetModel(nn.Module):
 
         num_given_samples = first_samples.size(0)
         total_samples = num_given_samples + num_samples
-        print(torch.cuda.is_available())
-        device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-        input = Variable(torch.cuda.FloatTensor(1, self.classes, 1).zero_())
+        cuda_available = torch.cuda.is_available()
+        device = torch.device("cuda:0" if cuda_available else "cpu")
+        input = Variable(torch.cuda.FloatTensor(1, self.classes, 1).zero_()) if cuda_available else Variable(torch.FloatTensor(1, self.classes, 1).zero_())
         input = input.scatter_(1, first_samples[0:1].view(1, -1, 1), 1.)
         input.to(device)
-        print(type(device))
-        print(type(input))
+
         # fill queues with given samples
         for i in range(num_given_samples - 1):
             x = self.wavenet(input,
