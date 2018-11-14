@@ -28,13 +28,13 @@ data = WavenetDataset(dataset_file='train_samples/bach_chaconne/dataset.npz',
                       file_location='train_samples/bach_chaconne',
                       test_stride=500)
 print('the dataset has ' + str(len(data)) + ' items')
-
+device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+data.to(device)
 start_data = data[250000][0] # use start data from the data set
-start_data = torch.max(start_data, 0)[1] # convert one hot vectors to integers
+start_data = torch.cuda.max(start_data, 0)[1] # convert one hot vectors to integers
 
 def prog_callback(step, total_steps):
     print(str(100 * step // total_steps) + "% generated")
-device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
 start_data.to(device)
 generated = model.generate_fast(num_samples=160000,
                                 first_samples=start_data,
