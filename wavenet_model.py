@@ -302,7 +302,7 @@ class WaveNetModel(nn.Module):
             generated = np.append(generated, o)
 
             # set new input
-            x = Variable(torch.from_numpy(x).type(torch.cuda.LongTensor))
+            x = Variable(torch.from_numpy(x).type(torch.cuda.LongTensor if cuda_available else torch.LongTensor))
             input.zero_()
             input = input.scatter_(1, x.view(1, -1, 1), 1.).view(1, self.classes, 1)
 
