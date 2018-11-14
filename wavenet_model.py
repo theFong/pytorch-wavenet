@@ -176,7 +176,8 @@ class WaveNetModel(nn.Module):
 
     def queue_dilate(self, input, dilation, init_dilation, i):
         queue = self.dilated_queues[i]
-        queue.enqueue(input.item())
+        print(input.data[0][0])
+        queue.enqueue(input.data[0][0])
         x = queue.dequeue(num_deq=self.kernel_size,
                           dilation=dilation)
         x = x.unsqueeze(0)
