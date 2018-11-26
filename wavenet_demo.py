@@ -33,10 +33,10 @@ print('receptive field: ', model.receptive_field)
 print('parameter count: ', model.parameter_count())
 
 
-data = WavenetDataset(dataset_file='../npz_vctk/numpy_features/p305_067.npz',
+data = WavenetDataset(dataset_file='train_samples/bach_chaconne/dataset.npz',
                       item_length=model.receptive_field + model.output_length - 1,
                       target_length=model.output_length,
-                      file_location='train_samples/numpy_features',
+                      file_location='train_samples/bach_chaconne',
                       test_stride=1)
 print('the dataset has ' + str(len(data)) + ' items')
 

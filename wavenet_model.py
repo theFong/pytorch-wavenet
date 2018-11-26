@@ -274,7 +274,9 @@ class WaveNetModel(nn.Module):
 
         # generate new samples
         generated = np.array([])
-        regularizer = torch.pow(Variable(torch.arange(self.classes)) - self.classes / 2., 2).cuda() if cuda_available else torch.pow(Variable(torch.arange(self.classes)) - self.classes / 2., 2)
+        regularizer = torch.pow(Variable(torch.arange(self.classes)) - self.classes / 2., 2)
+        if cuda_available:
+            regularizer = regularizer.cuda()
         regularizer = regularizer.squeeze() * regularize
         regularizer = regularizer.type(torch.float)
         tic = time.time()
