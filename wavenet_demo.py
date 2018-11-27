@@ -37,7 +37,7 @@ data = WavenetDataset(dataset_file='train_samples/bach_chaconne/dataset.npz',
                       item_length=model.receptive_field + model.output_length - 1,
                       target_length=model.output_length,
                       file_location='train_samples/bach_chaconne',
-                      test_stride=1)
+                      test_stride=500)
 print('the dataset has ' + str(len(data)) + ' items')
 
 def generate_and_log_samples(step):

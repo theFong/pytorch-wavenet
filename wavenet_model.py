@@ -245,7 +245,7 @@ class WaveNetModel(nn.Module):
                       progress_interval=100):
         self.eval()
         if first_samples is None:
-            first_samples = torch.LongTensor(1).zero_() + (self.classes // 2)
+            first_samples = torch.cuda.LongTensor(1).zero_() + (self.classes // 2)
         first_samples = Variable(first_samples)
 
         # reset queues
